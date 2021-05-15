@@ -8,7 +8,7 @@ import TodoList from './views/todo-list'
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route path="/todos/:id" exact>
             <TodoList />
