@@ -79,8 +79,11 @@ export function ClickableTodoItemBlock({
           className="p-4 text-gray-500 transition bg-indigo-200 bg-opacity-0 hover:bg-opacity-40 cursor-pointer "
           onClick={() => onContextToggle(item)}
         >
-          {!!isSelected && <ChevronDownIcon className="w-6 h-6" />}
-          {!isSelected && <ChevronRightIcon className="w-6 h-6" />}
+          <ChevronRightIcon
+            className={`w-6 h-6 transition-transform transform ${
+              isSelected ? 'rotate-90' : ''
+            }`}
+          />
         </div>
       </div>
 
