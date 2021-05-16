@@ -1,5 +1,4 @@
 import {
-  ChevronDownIcon,
   ChevronRightIcon,
   PencilAltIcon,
   TrashIcon,
@@ -48,7 +47,11 @@ export function ClickableTodoItemBlock({
   }
 
   return (
-    <div className="bg-blue-100 bg-opacity-50 transition hover:bg-opacity-80 ">
+    <div
+      className={`bg-blue-100 bg-opacity-50 transition-height hover:bg-opacity-80 overflow-hidden max-h-16 ${
+        isSelected ? 'max-h-96' : ''
+      }`}
+    >
       <div className="flex items-stretch overflow-hidden" data-id={item.id}>
         <div
           className="px-5 py-4 transition bg-indigo-200 bg-opacity-0 hover:bg-opacity-40 cursor-pointer"
@@ -88,7 +91,11 @@ export function ClickableTodoItemBlock({
       </div>
 
       {/* Context content */}
-      {!!isSelected && (
+      <div
+        className={`overflow-hidden transition-height max-h-0 ${
+          isSelected ? 'max-h-96' : ''
+        }`}
+      >
         <div className="flex items-center justify-end">
           <div
             className={`p-4 ${
@@ -107,7 +114,7 @@ export function ClickableTodoItemBlock({
             <TrashIcon className="w-6 h-6" />
           </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }
