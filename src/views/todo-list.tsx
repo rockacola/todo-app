@@ -65,6 +65,11 @@ function TodoList() {
     // TODO: input validation, boundary check etc
     // TODO: duplication detection
 
+    if (newItemTitle.trim().length === 0) {
+      console.warn('Todo item cannot be empty.')
+      return
+    }
+
     const newTodoItem: TodoItem = {
       id: Math.floor(Math.random() * 1000000).toString(),
       title: newItemTitle,
