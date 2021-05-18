@@ -1,3 +1,5 @@
+import { TrashIcon } from '@heroicons/react/outline'
+import { clone } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
 import { TimingHelper } from '../helpers'
@@ -96,6 +98,17 @@ function TodosRS() {
     updateDisplayTodoItems(500)
   }
 
+  const onIsCompleteToggleHandler = (item: TodoItemRS) => {
+    console.log('onIsCompleteToggleHandler triggered. item:', item)
+
+    const mutatedItem = clone(item)
+    mutatedItem.completedAt =
+      item.completedAt > -1 ? -1 : Math.floor(Date.now() / 1000)
+    mutatedItem.updatedAt = Math.floor(Date.now() / 1000)
+    ;(remoteStorage as any).myTodos.updateTodoItem(mutatedItem)
+    updateDisplayTodoItems()
+  }
+
   const onItemDeleteHandler = (item: TodoItemRS) => {
     console.log('onItemDeleteHandler triggered. item:', item)
     ;(remoteStorage as any).myTodos.removeTodoItem(item.id)
@@ -115,17 +128,40 @@ function TodosRS() {
     remoteStorage.disconnect()
   }
 
-  const renderTodoItem = (item: TodoItemRS, index: number) => (
-    <div key={index} className="p-2 my-2 bg-red-50 rounded flex items-center">
-      <div className="flex-grow">{item.title}</div>
+  const renderTodoItem = (item: TodoItemRS, index: number) => {
+    const isCompleted = item.completedAt > -1
+    const titleAdditionalClasses = isCompleted ? 'line-through' : ''
+
+    return (
       <div
-        className="px-4 py-2 bg-blue-100 rounded hover:bg-blue-200 cursor-pointer"
-        onClick={() => onItemDeleteHandler(item)}
+        key={index}
+        className="p-2 my-2 bg-red-50 transition hover:bg-red-100 rounded flex items-stretch"
       >
-        X
+        <div
+          className="p-4 bg-blue-100 rounded transition hover:bg-blue-200 cursor-pointer"
+          onClick={() => onIsCompleteToggleHandler(item)}
+        >
+          <input
+            type="checkbox"
+            checked={isCompleted}
+            className="cursor-pointer"
+            onChange={() => {}}
+          />
+        </div>
+        <div
+          className={`flex-grow ml-2 flex items-center ${titleAdditionalClasses}`}
+        >
+          {item.title}
+        </div>
+        <div
+          className="px-4 py-2 bg-blue-100 rounded transition hover:bg-blue-200 cursor-pointer flex items-center"
+          onClick={() => onItemDeleteHandler(item)}
+        >
+          <TrashIcon className="w-4 h-4 text-red-400" />
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 
   return (
     <div className="h-screen bg-gray-100">

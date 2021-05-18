@@ -28,7 +28,9 @@ export const TodosModule = {
           return privateClient.storeObject('todoItem', item.id, item)
         },
 
-        // TODO: updateTodoItem
+        updateTodoItem: (item: TodoItemRS) => {
+          return privateClient.storeObject('todoItem', item.id, item)
+        },
 
         removeTodoItem: privateClient.remove.bind(privateClient),
 
