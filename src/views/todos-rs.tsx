@@ -145,7 +145,7 @@ function TodosRS() {
           {isCompleted && <CheckIcon className="w-8 h-8" />}
         </div>
         <div
-          className={`flex-grow ml-4 flex items-center ${titleAdditionalClasses}`}
+          className={`flex-grow ml-4 flex items-center text-gray-800 ${titleAdditionalClasses}`}
         >
           {item.title}
         </div>
