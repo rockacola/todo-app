@@ -1,4 +1,4 @@
-import { TrashIcon } from '@heroicons/react/outline'
+import { CheckIcon, TrashIcon } from '@heroicons/react/outline'
 import { clone, sortBy } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
@@ -136,29 +136,24 @@ function TodosRS() {
     return (
       <div
         key={index}
-        className="p-2 my-2 bg-red-50 transition hover:bg-red-100 rounded flex items-stretch"
+        className="p-2 my-2 bg-green-50 transition hover:bg-green-100 rounded flex items-stretch"
       >
         <div
-          className="p-4 bg-blue-100 rounded transition hover:bg-blue-200 cursor-pointer"
+          className="w-12 h-12 bg-green-300 bg-opacity-70 rounded-lg transition hover:bg-opacity-100 cursor-pointer text-green-800 flex items-center justify-center"
           onClick={() => onIsCompleteToggleHandler(item)}
         >
-          <input
-            type="checkbox"
-            checked={isCompleted}
-            className="cursor-pointer"
-            onChange={() => {}}
-          />
+          {isCompleted && <CheckIcon className="w-8 h-8" />}
         </div>
         <div
-          className={`flex-grow ml-2 flex items-center ${titleAdditionalClasses}`}
+          className={`flex-grow ml-4 flex items-center ${titleAdditionalClasses}`}
         >
           {item.title}
         </div>
         <div
-          className="px-4 py-2 bg-blue-100 rounded transition hover:bg-blue-200 cursor-pointer flex items-center"
+          className="px-4 py-2 bg-red-500 bg-opacity-70 rounded transition hover:bg-opacity-100 cursor-pointer flex items-center"
           onClick={() => onItemDeleteHandler(item)}
         >
-          <TrashIcon className="w-4 h-4 text-red-400" />
+          <TrashIcon className="w-4 h-4 text-gray-50" />
         </div>
       </div>
     )
