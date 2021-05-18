@@ -13,7 +13,7 @@ import { RemoteStorageConnection } from '../partials/remote-storage-connection'
 const CLAIM_DIR = process.env.REACT_APP_STORAGE_CLAIM_DIR
 let remoteStorage: RemoteStorage
 
-function TodosRS() {
+function Todos() {
   // console.log('TodosRS component rendered.')
   // console.log('process.env:', process.env)
 
@@ -205,4 +205,4 @@ function TodosRS() {
   )
 }
 
-export default TodosRS
+export default Todos

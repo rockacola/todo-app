@@ -3,7 +3,7 @@ import { store } from './store'
 import { Provider } from 'react-redux'
 import Landing from './views/landing'
 import NotFound from './views/not-found'
-import TodosRS from './views/todos-rs'
+import Todos from './views/todos'
 import { ToastContainer } from 'react-toastify'
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route path="/todos/1" exact>
-            <TodosRS />
+            <Todos />
           </Route>
           <Route path="/" exact>
             <Landing />
