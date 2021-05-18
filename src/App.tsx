@@ -5,6 +5,7 @@ import Landing from './views/landing'
 import NotFound from './views/not-found'
 import TodoList from './views/todo-list'
 import TodosRS from './views/todos-rs'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <NotFound />
           </Route>
         </Switch>
+        <ToastContainer position="bottom-right" />
       </BrowserRouter>
     </Provider>
   )

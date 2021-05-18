@@ -1,6 +1,7 @@
 import { CheckIcon, TrashIcon } from '@heroicons/react/outline'
 import { clone, sortBy } from 'lodash'
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import RemoteStorage from 'remotestoragejs'
 import { TodoItemFactory } from '../factories'
 import { CastHelper, TimingHelper } from '../helpers'
@@ -39,6 +40,7 @@ function TodosRS() {
       console.log('remoteStorage.connected event triggered.')
       updateDisplayTodoItems()
       setIsRemoteStorageConnected(true)
+      toast.info('RemoteStorage connected!')
     })
 
     remoteStorage.on('network-offline', () => {
@@ -52,6 +54,7 @@ function TodosRS() {
     remoteStorage.on('disconnected', () => {
       console.log('remoteStorage.disconnected event triggered.')
       setIsRemoteStorageConnected(false)
+      toast.info('RemoteStorage disconnected!')
     })
 
     remoteStorage.on('error', (err: any) => {
@@ -95,8 +98,7 @@ function TodosRS() {
     await (remoteStorage as any).myTodos.addTodoItem(newItem)
     await updateDisplayTodoItems()
     setNewItemTitle('') // Reset input filed
-    // TODO: notifier
-    console.log('performAddTodoItem complete.')
+    toast.success('New todo item added.')
   }
 
   const onSubmitHandler = (e: React.FormEvent) => {
@@ -120,7 +122,7 @@ function TodosRS() {
   const performRemoveTodoItem = async (item: TodoItemRS) => {
     await (remoteStorage as any).myTodos.removeTodoItem(item.id)
     await updateDisplayTodoItems()
-    // TODO: notifier
+    toast.success('Todo item deleted.')
   }
 
   const onItemDeleteHandler = (item: TodoItemRS) => {
