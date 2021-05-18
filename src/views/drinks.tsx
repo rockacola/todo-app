@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
-import { DrinksModule } from '../modules/drinks-module';
+import { DrinksModule } from '../modules/drinks-module'
 
 const CLAIM_DIR = 'myDrinks'
-
-const remoteStorage = new RemoteStorage({
-  logging: false,
-  modules: [DrinksModule]
-});
-remoteStorage.access.claim(CLAIM_DIR, 'rw')
-// const remoteClient = remoteStorage.scope('/' + CLAIM_DIR + '/');
+let remoteStorage: RemoteStorage
 
 interface DrinkItem {
   id: string
@@ -17,53 +11,67 @@ interface DrinkItem {
 }
 
 function Drinks() {
+  console.log('Drinks component rendered.')
+
   const [newItemTitle, setNewItemTitle] = useState<string>('')
   const [displayDrinks, setDisplayDrinks] = useState<DrinkItem[]>([])
   const [isConnected, setIsConnected] = useState<boolean>(false)
 
-  // useEffect(() => {
-  //   setDisplayDrinks([
-  //     {id: '12', name: 'One'},
-  //     {id: '13', name: 'Two'}
-  //   ])
-  // }, [])
+  const initRemoteStorage = () => {
+    console.log('initRemoteStorage triggered.')
 
-  remoteStorage.on('ready', () => {
-    console.log('remoteStorage.ready event triggered.')
-  })
+    remoteStorage = new RemoteStorage({
+      logging: false,
+      modules: [DrinksModule],
+    })
+    remoteStorage.access.claim(CLAIM_DIR, 'rw')
+    // const remoteClient = remoteStorage.scope('/' + CLAIM_DIR + '/');
 
-  const fooDrinks = async () => {
-    const fetchedDrinks = await (remoteStorage as any).myDrinks.listDrinks();
-    console.log('fetchedDrinks:', fetchedDrinks)
-    setDisplayDrinks(Object.values(fetchedDrinks))
+    remoteStorage.on('ready', () => {
+      console.log('remoteStorage.ready event triggered.')
+    })
+
+    remoteStorage.on('connected', () => {
+      console.log('remoteStorage.connected event triggered.')
+      updateDisplayDrinks()
+      setIsConnected(true)
+    })
+
+    remoteStorage.on('network-offline', () => {
+      console.log('remoteStorage.network-offline event triggered.')
+    })
+
+    remoteStorage.on('network-online', () => {
+      console.log('remoteStorage.network-online event triggered.')
+    })
+
+    remoteStorage.on('disconnected', () => {
+      console.log('remoteStorage.disconnected event triggered.')
+      setIsConnected(false)
+    })
+
+    remoteStorage.on('error', (err: any) => {
+      console.log('remoteStorage.error event triggered. err:', err)
+    })
   }
 
-  remoteStorage.on('connected', () => {
-    console.log('remoteStorage.connected event triggered.')
+  useEffect(() => {
+    console.log('Component onMount triggered.')
 
-    // TODO: sync list
-    fooDrinks()
-    
-  })
+    // setDisplayDrinks([
+    //   {id: '12', name: 'One'},
+    //   {id: '13', name: 'Two'}
+    // ])
 
-  remoteStorage.on('network-offline', () => {
-    console.log('remoteStorage.network-offline event triggered.')
-  })
+    initRemoteStorage()
+  }, [])
 
-  remoteStorage.on('network-online', () => {
-    console.log('remoteStorage.network-online event triggered.')
-  })
-
-  remoteStorage.on('disconnected', () => {
-    console.log('remoteStorage.disconnected event triggered.')
-  })
-
-  remoteStorage.on('error', (err: any) => {
-    console.log('remoteStorage.error event triggered. err:', err)
-  })
-
-
-
+  const updateDisplayDrinks = async () => {
+    const fetchedDrinks = await (remoteStorage as any).myDrinks.listDrinks()
+    const drinksArray = Object.values(fetchedDrinks).filter((item) => typeof item === 'object')
+    console.log('drinksArray:', drinksArray)
+    setDisplayDrinks(drinksArray as DrinkItem[])
+  }
 
   const onNewItemTitleChangeHandler = (e: React.ChangeEvent) => {
     // console.log('onNewItemTitleChangeHandler triggered. e:', e)
@@ -73,15 +81,17 @@ function Drinks() {
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('onSubmitHandler triggered. e:', e)
-
-    ;(remoteStorage as any).myDrinks.addDrink(newItemTitle);
+    ;(remoteStorage as any).myDrinks.addDrink(newItemTitle)
     setNewItemTitle('')
+    updateDisplayDrinks()
   }
 
   const onItemDeleteHandler = (item: DrinkItem) => {
     console.log('onItemDeleteHandler triggered. item:', item)
-
-    ;(remoteStorage as any).myDrinks.removeDrink(item.id);
+    console.log('remoteStorage:', remoteStorage)
+    const storageItemId = item.name.toLowerCase().replace(/\s|\//g, '-'); // TODO: hash it reliably
+    ;(remoteStorage as any).myDrinks.removeDrink(storageItemId)
+    updateDisplayDrinks()
   }
 
   const connectHandler = () => {
@@ -97,12 +107,15 @@ function Drinks() {
     remoteStorage.disconnect()
   }
 
-
-
   const renderDrinkItem = (item: DrinkItem, index: number) => (
     <div key={index} className="p-2 my-2 bg-red-50 rounded flex items-center">
       <div className="flex-grow">{item.name}</div>
-      <div className="p-2 bg-blue-100 hover:bg-blue-200 cursor-pointer" onClick={() => onItemDeleteHandler(item)}>[X]</div>
+      <div
+        className="p-2 bg-blue-100 hover:bg-blue-200 cursor-pointer"
+        onClick={() => onItemDeleteHandler(item)}
+      >
+        [X]
+      </div>
     </div>
   )
 
@@ -114,7 +127,7 @@ function Drinks() {
         </h1>
         <div className="my-2 text-center">
           <div className="inline-block p-2 bg-indigo-200 hover:bg-indigo-300 rounded">
-          {!isConnected ? (
+            {!isConnected ? (
               <button onClick={connectHandler}>Connect</button>
             ) : (
               <button onClick={disconnectHandler}>Disconnect</button>
