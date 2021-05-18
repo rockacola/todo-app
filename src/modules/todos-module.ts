@@ -1,5 +1,7 @@
 import { TodoItemRS } from '../interfaces'
 
+const TODO_ITEMS_BASE_DIR = 'todo-items/' // TODO: use env var
+
 export const TodosModule = {
   name: 'myTodos',
   builder: (privateClient: any) => {
@@ -19,28 +21,29 @@ export const TodosModule = {
     return {
       exports: {
         init: () => {
-          privateClient.cache('')
+          privateClient.cache(TODO_ITEMS_BASE_DIR)
         },
 
         on: privateClient.on,
 
         addTodoItem: async (item: TodoItemRS) => {
-          return privateClient.storeObject('todoItem', item.id, item)
+          const path = TODO_ITEMS_BASE_DIR + item.id
+          return privateClient.storeObject('todoItem', path, item)
         },
 
         updateTodoItem: async (item: TodoItemRS) => {
-          return privateClient.storeObject('todoItem', item.id, item)
+          const path = TODO_ITEMS_BASE_DIR + item.id
+          return privateClient.storeObject('todoItem', path, item)
         },
 
-        // TODO: double check that this indeed returns promise
-        removeTodoItem: privateClient.remove.bind(privateClient),
+        removeTodoItem: async (id: string) => {
+          const path = TODO_ITEMS_BASE_DIR + id
+          return privateClient.remove(path)
+        },
 
         listTodoItems: async () => {
-          // TODO: look into proper namespace/prefix setup
-          return privateClient.getAll('')
+          return privateClient.getAll(TODO_ITEMS_BASE_DIR)
         },
-
-        // TODO: get 'last sync at' timestamp
       },
     }
   },
