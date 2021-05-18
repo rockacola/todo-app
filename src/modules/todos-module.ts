@@ -1,9 +1,9 @@
 import { TodoItemRS } from '../interfaces'
 
-const TODO_ITEMS_BASE_DIR = 'todo-items/' // TODO: use env var
+const TODO_ITEMS_BASE_DIR = process.env.REACT_APP_STORAGE_TODO_ITEMS_BASE_DIR
 
 export const TodosModule = {
-  name: 'myTodos',
+  name: process.env.REACT_APP_STORAGE_CLAIM_DIR,
   builder: (privateClient: any) => {
     privateClient.declareType('todoItem', {
       type: 'object',

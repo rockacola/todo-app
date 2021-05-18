@@ -3,17 +3,18 @@ import { clone, sortBy } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
 import { TodoItemFactory } from '../factories'
-import { TimingHelper } from '../helpers'
+import { CastHelper, TimingHelper } from '../helpers'
 import { TodoItemRS } from '../interfaces'
 import { TodosModule } from '../modules/todos-module'
 import { AddTodoItemForm } from '../partials/add-todo-item-form'
 import { RemoteStorageConnection } from '../partials/remote-storage-connection'
 
-const CLAIM_DIR = 'myTodos'
+const CLAIM_DIR = process.env.REACT_APP_STORAGE_CLAIM_DIR
 let remoteStorage: RemoteStorage
 
 function TodosRS() {
   // console.log('TodosRS component rendered.')
+  // console.log('process.env:', process.env)
 
   const [newItemTitle, setNewItemTitle] = useState<string>('')
   const [displayTodoItems, setDisplayTodoItems] = useState<TodoItemRS[]>([])
@@ -24,7 +25,7 @@ function TodosRS() {
     console.log('initRemoteStorage triggered.')
 
     remoteStorage = new RemoteStorage({
-      logging: false,
+      logging: CastHelper.toBool(process.env.REACT_APP_STORAGE_LOG_ENABLED),
       modules: [TodosModule],
     })
     remoteStorage.access.claim(CLAIM_DIR, 'rw')
