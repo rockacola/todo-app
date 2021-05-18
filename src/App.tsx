@@ -3,15 +3,16 @@ import { store } from './store'
 import { Provider } from 'react-redux'
 import Landing from './views/landing'
 import NotFound from './views/not-found'
-import TodoList from './views/todo-list'
+import Todos from './views/todos'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
-          <Route path="/todos/:id" exact>
-            <TodoList />
+          <Route path="/todos/1" exact>
+            <Todos />
           </Route>
           <Route path="/" exact>
             <Landing />
@@ -20,6 +21,7 @@ function App() {
             <NotFound />
           </Route>
         </Switch>
+        <ToastContainer position="bottom-right" />
       </BrowserRouter>
     </Provider>
   )
