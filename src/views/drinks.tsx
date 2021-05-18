@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
 import { DrinksModule } from '../modules/drinks-module';
 
 const CLAIM_DIR = 'myDrinks'
 
 const remoteStorage = new RemoteStorage({
-  logging: true,
+  logging: false,
   modules: [DrinksModule]
 });
 remoteStorage.access.claim(CLAIM_DIR, 'rw')
-
+// const remoteClient = remoteStorage.scope('/' + CLAIM_DIR + '/');
 
 interface DrinkItem {
   id: string
@@ -21,12 +21,29 @@ function Drinks() {
   const [displayDrinks, setDisplayDrinks] = useState<DrinkItem[]>([])
   const [isConnected, setIsConnected] = useState<boolean>(false)
 
+  // useEffect(() => {
+  //   setDisplayDrinks([
+  //     {id: '12', name: 'One'},
+  //     {id: '13', name: 'Two'}
+  //   ])
+  // }, [])
+
   remoteStorage.on('ready', () => {
     console.log('remoteStorage.ready event triggered.')
   })
 
+  const fooDrinks = async () => {
+    const fetchedDrinks = await (remoteStorage as any).myDrinks.listDrinks();
+    console.log('fetchedDrinks:', fetchedDrinks)
+    setDisplayDrinks(Object.values(fetchedDrinks))
+  }
+
   remoteStorage.on('connected', () => {
     console.log('remoteStorage.connected event triggered.')
+
+    // TODO: sync list
+    fooDrinks()
+    
   })
 
   remoteStorage.on('network-offline', () => {
@@ -41,8 +58,8 @@ function Drinks() {
     console.log('remoteStorage.disconnected event triggered.')
   })
 
-  remoteStorage.on('error', () => {
-    console.log('remoteStorage.error event triggered.')
+  remoteStorage.on('error', (err: any) => {
+    console.log('remoteStorage.error event triggered. err:', err)
   })
 
 
@@ -82,8 +99,8 @@ function Drinks() {
 
 
 
-  const renderDrinkItem = (item: DrinkItem) => (
-    <div key={item.id} className="p-2 my-2 bg-red-50 rounded flex items-center">
+  const renderDrinkItem = (item: DrinkItem, index: number) => (
+    <div key={index} className="p-2 my-2 bg-red-50 rounded flex items-center">
       <div className="flex-grow">{item.name}</div>
       <div className="p-2 bg-blue-100 hover:bg-blue-200 cursor-pointer" onClick={() => onItemDeleteHandler(item)}>[X]</div>
     </div>
@@ -105,7 +122,7 @@ function Drinks() {
           </div>
         </div>
         <div className="">
-          {displayDrinks.map((item, index) => renderDrinkItem(item))}
+          {displayDrinks.map((item, index) => renderDrinkItem(item, index))}
         </div>
         <div>
           <form onSubmit={onSubmitHandler}>

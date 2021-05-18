@@ -19,7 +19,7 @@ export const DrinksModule = {
         on: privateClient.on,
 
         addDrink: (name: string) => {
-          const id = name.toLowerCase().replace(/\s|\//g, '-'); // TODO
+          const id = name.toLowerCase().replace(/\s|\//g, '-'); // TODO: hash it reliably
           return privateClient.storeObject('drink', id, {
             name,
           });
