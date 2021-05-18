@@ -39,6 +39,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "redux-logger": "^3.0.6",
+    "remotestoragejs": "^2.0.0-beta.0",
     "typescript": "^4.2.4",
     "web-vitals": "^1.1.2"
   },
