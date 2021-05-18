@@ -160,7 +160,7 @@ function TodosRS() {
   }
 
   return (
-    <div className="h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100">
       <div className="w-100 max-w-xl h-full mx-auto bg-white py-4 md:px-4 relative">
         <h1 className="text-lg font-bold text-gray-800 text-center leading-tight p-4 mb-4">
           Todo List
