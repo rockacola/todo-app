@@ -1,4 +1,4 @@
-import { CheckIcon, TrashIcon } from '@heroicons/react/outline'
+import { CheckIcon, EmojiHappyIcon, TrashIcon } from '@heroicons/react/outline'
 import { clone, sortBy } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -194,6 +194,12 @@ function TodosRS() {
           onConnect={connectHandler}
           onDisconnect={disconnectHandler}
         />
+        <div className="my-8">
+          <EmojiHappyIcon className="w-16 h-16 text-gray-100 m-auto" />
+        </div>
+        <div className="text-sm text-gray-200 text-center">
+          Todo App {process.env.REACT_APP_VERSION}
+        </div>
       </div>
     </div>
   )
