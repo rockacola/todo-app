@@ -4,7 +4,6 @@ import { Provider } from 'react-redux'
 import Landing from './views/landing'
 import NotFound from './views/not-found'
 import TodoList from './views/todo-list'
-import Drinks from './views/drinks'
 import TodosRS from './views/todos-rs'
 
 function App() {
@@ -14,9 +13,6 @@ function App() {
         <Switch>
           <Route path="/todos/:id" exact>
             <TodoList />
-          </Route>
-          <Route path="/drinks" exact>
-            <Drinks />
           </Route>
           <Route path="/todos_rs" exact>
             <TodosRS />
