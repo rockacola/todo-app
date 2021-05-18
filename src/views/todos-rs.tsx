@@ -1,4 +1,4 @@
-import { RefreshIcon, TrashIcon } from '@heroicons/react/outline'
+import { TrashIcon } from '@heroicons/react/outline'
 import { clone, sortBy } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
@@ -7,6 +7,7 @@ import { TimingHelper } from '../helpers'
 import { TodoItemRS } from '../interfaces'
 import { TodosModule } from '../modules/todos-module'
 import { AddTodoItemForm } from '../partials/add-todo-item-form'
+import { RemoteStorageConnection } from '../partials/remote-storage-connection'
 
 const CLAIM_DIR = 'myTodos'
 let remoteStorage: RemoteStorage
@@ -128,32 +129,6 @@ function TodosRS() {
     remoteStorage.disconnect()
   }
 
-  const renderRemoteStorageConnection = () => {
-    const connectionToggleHandler = (e: React.MouseEvent) => {
-      if (isRemoteStorageConnected) {
-        disconnectHandler()
-      } else {
-        connectHandler()
-      }
-    }
-    const operatorTitle = isRemoteStorageConnected
-      ? 'Disconnect from RemoteStorage'
-      : 'Connect to a RemoteStorage'
-    const additionalClasses = isRemoteStorageConnected ? 'bg-red-500' : ''
-
-    return (
-      <div className="absolute top-6 right-6">
-        <div
-          className={`p-2 bg-gray-200 rounded-full transition hover:bg-opacity-80 cursor-pointer text-gray-50 ${additionalClasses}`}
-          onClick={connectionToggleHandler}
-          title={operatorTitle}
-        >
-          <RefreshIcon className="w-6 h-6" />
-        </div>
-      </div>
-    )
-  }
-
   const renderTodoItem = (item: TodoItemRS, index: number) => {
     const isCompleted = item.completedAt > -1
     const titleAdditionalClasses = isCompleted ? 'line-through' : ''
@@ -205,7 +180,11 @@ function TodosRS() {
             onTitleChange={onNewItemTitleChangeHandler}
           />
         </div>
-        {renderRemoteStorageConnection()}
+        <RemoteStorageConnection
+          isConnected={isRemoteStorageConnected}
+          onConnect={connectHandler}
+          onDisconnect={disconnectHandler}
+        />
       </div>
     </div>
   )
