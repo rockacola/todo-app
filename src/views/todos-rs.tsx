@@ -1,10 +1,11 @@
-import { TrashIcon } from '@heroicons/react/outline'
+import { RefreshIcon, TrashIcon } from '@heroicons/react/outline'
 import { clone, sortBy } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
 import { TimingHelper } from '../helpers'
 import { TodoItemRS } from '../interfaces'
 import { TodosModule } from '../modules/todos-module'
+import { AddTodoItemForm } from '../partials/add-todo-item-form'
 
 const CLAIM_DIR = 'myTodos'
 let remoteStorage: RemoteStorage
@@ -52,6 +53,10 @@ function TodosRS() {
 
     remoteStorage.on('error', (err: any) => {
       console.log('remoteStorage.error event triggered. err:', err)
+    })
+
+    remoteStorage.onChange(`/${CLAIM_DIR}/`, () => {
+      console.log('remoteStorage.onChange event triggered.')
     })
   }
 
@@ -130,6 +135,32 @@ function TodosRS() {
     remoteStorage.disconnect()
   }
 
+  const renderRemoteStorageConnection = () => {
+    const connectionToggleHandler = (e: React.MouseEvent) => {
+      if (isRemoteStorageConnected) {
+        disconnectHandler()
+      } else {
+        connectHandler()
+      }
+    }
+    const operatorTitle = isRemoteStorageConnected
+      ? 'Disconnect from RemoteStorage'
+      : 'Connect to a RemoteStorage'
+    const additionalClasses = isRemoteStorageConnected ? 'bg-red-500' : ''
+
+    return (
+      <div className="absolute top-6 right-6">
+        <div
+          className={`p-2 bg-gray-200 rounded-full transition hover:bg-opacity-80 cursor-pointer text-gray-50 ${additionalClasses}`}
+          onClick={connectionToggleHandler}
+          title={operatorTitle}
+        >
+          <RefreshIcon className="w-6 h-6" />
+        </div>
+      </div>
+    )
+  }
+
   const renderTodoItem = (item: TodoItemRS, index: number) => {
     const isCompleted = item.completedAt > -1
     const titleAdditionalClasses = isCompleted ? 'line-through' : ''
@@ -167,42 +198,21 @@ function TodosRS() {
 
   return (
     <div className="h-screen bg-gray-100">
-      <div className="w-100 max-w-xl h-full mx-auto bg-white py-4 md:px-4">
-        <h1 className="text-lg font-bold text-gray-800 text-center leading-tight p-4">
+      <div className="w-100 max-w-xl h-full mx-auto bg-white py-4 md:px-4 relative">
+        <h1 className="text-lg font-bold text-gray-800 text-center leading-tight p-4 mb-4">
           Todo List
         </h1>
-        <div className="my-2 text-center">
-          <div className="inline-block p-2 bg-indigo-200 hover:bg-indigo-300 rounded">
-            {!isRemoteStorageConnected ? (
-              <button onClick={connectHandler}>Connect</button>
-            ) : (
-              <button onClick={disconnectHandler}>Disconnect</button>
-            )}
-          </div>
-        </div>
         <div className="">
           {displayTodoItems.map((item, index) => renderTodoItem(item, index))}
         </div>
         <div>
-          <form onSubmit={onSubmitHandler}>
-            <div className="flex items-center">
-              <input
-                className="p-4 bg-gray-50 focus:bg-gray-100 flex-grow"
-                type="text"
-                name="title"
-                value={newItemTitle}
-                onChange={onNewItemTitleChangeHandler}
-                placeholder="New item..."
-              />
-              <button
-                className="px-3 py-4 bg-green-300 bg-opacity-60 transition hover:bg-opacity-100"
-                type="submit"
-              >
-                Add
-              </button>
-            </div>
-          </form>
+          <AddTodoItemForm
+            title={newItemTitle}
+            onSubmit={onSubmitHandler}
+            onTitleChange={onNewItemTitleChangeHandler}
+          />
         </div>
+        {renderRemoteStorageConnection()}
       </div>
     </div>
   )
