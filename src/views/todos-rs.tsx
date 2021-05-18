@@ -1,5 +1,5 @@
 import { TrashIcon } from '@heroicons/react/outline'
-import { clone } from 'lodash'
+import { clone, sortBy } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
 import { TimingHelper } from '../helpers'
@@ -66,14 +66,16 @@ function TodosRS() {
       await TimingHelper.sleep(delay)
     }
 
-    console.log('updateDisplayTodoItems triggered.')
+    // console.log('updateDisplayTodoItems triggered.')
     const todoItemsRes = await (remoteStorage as any).myTodos.listTodoItems()
-    console.log('todoItemsRes:', todoItemsRes)
-    const todoItemsArray = Object.values(todoItemsRes).filter(
+    // console.log('todoItemsRes:', todoItemsRes)
+    const todoItems = Object.values(todoItemsRes).filter(
       (item) => typeof item === 'object'
-    )
-    console.log('todoItemsArray:', todoItemsArray)
-    setDisplayTodoItems(todoItemsArray as TodoItemRS[])
+    ) as TodoItemRS[]
+    // console.log('todoItemsArray:', todoItemsArray)
+    const sortedItems = sortBy(todoItems, (item) => item.createdAt)
+
+    setDisplayTodoItems(sortedItems)
   }
 
   const onNewItemTitleChangeHandler = (e: React.ChangeEvent) => {
