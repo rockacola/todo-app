@@ -24,17 +24,18 @@ export const TodosModule = {
 
         on: privateClient.on,
 
-        addTodoItem: (item: TodoItemRS) => {
+        addTodoItem: async (item: TodoItemRS) => {
           return privateClient.storeObject('todoItem', item.id, item)
         },
 
-        updateTodoItem: (item: TodoItemRS) => {
+        updateTodoItem: async (item: TodoItemRS) => {
           return privateClient.storeObject('todoItem', item.id, item)
         },
 
+        // TODO: double check that this indeed returns promise
         removeTodoItem: privateClient.remove.bind(privateClient),
 
-        listTodoItems: () => {
+        listTodoItems: async () => {
           // TODO: look into proper namespace/prefix setup
           return privateClient.getAll('')
         },

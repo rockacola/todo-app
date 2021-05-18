@@ -90,13 +90,19 @@ function TodosRS() {
     setNewItemTitle((e.target as any).value) // TODO: typing
   }
 
+  const performAddTodoItem = async (newItem: TodoItemRS) => {
+    await (remoteStorage as any).myTodos.addTodoItem(newItem)
+    await updateDisplayTodoItems()
+    setNewItemTitle('') // Reset input filed
+    // TODO: notifier
+    console.log('performAddTodoItem complete.')
+  }
+
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('onSubmitHandler triggered. e:', e)
     const newItem = TodoItemFactory.create(newItemTitle)
-    ;(remoteStorage as any).myTodos.addTodoItem(newItem)
-    setNewItemTitle('')
-    updateDisplayTodoItems(500)
+    performAddTodoItem(newItem)
   }
 
   const onIsCompleteToggleHandler = (item: TodoItemRS) => {
@@ -110,10 +116,15 @@ function TodosRS() {
     updateDisplayTodoItems()
   }
 
+  const performRemoveTodoItem = async (item: TodoItemRS) => {
+    await (remoteStorage as any).myTodos.removeTodoItem(item.id)
+    await updateDisplayTodoItems()
+    // TODO: notifier
+  }
+
   const onItemDeleteHandler = (item: TodoItemRS) => {
     console.log('onItemDeleteHandler triggered. item:', item)
-    ;(remoteStorage as any).myTodos.removeTodoItem(item.id)
-    updateDisplayTodoItems()
+    performRemoveTodoItem(item)
   }
 
   const connectHandler = () => {
