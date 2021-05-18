@@ -2,6 +2,7 @@ import { RefreshIcon, TrashIcon } from '@heroicons/react/outline'
 import { clone, sortBy } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
+import { TodoItemFactory } from '../factories'
 import { TimingHelper } from '../helpers'
 import { TodoItemRS } from '../interfaces'
 import { TodosModule } from '../modules/todos-module'
@@ -91,15 +92,7 @@ function TodosRS() {
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('onSubmitHandler triggered. e:', e)
-    // TODO: mvoe builder into its own helper
-    const newItem: TodoItemRS = {
-      id: `i_${Math.floor(Math.random() * 1000000)}`,
-      listId: 'l_1', // TODO: manage magic string
-      title: newItemTitle,
-      completedAt: -1,
-      createdAt: Math.floor(Date.now() / 1000),
-      updatedAt: -1,
-    }
+    const newItem = TodoItemFactory.create(newItemTitle)
     ;(remoteStorage as any).myTodos.addTodoItem(newItem)
     setNewItemTitle('')
     updateDisplayTodoItems(500)
