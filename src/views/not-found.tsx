@@ -2,7 +2,6 @@ import { useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
 // import Widget from 'remotestorage-widget'
 
-
 // const userAddress = `yenct@5apps.com`
 
 function NotFound() {

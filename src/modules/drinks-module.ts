@@ -6,31 +6,30 @@ export const DrinksModule = {
       properties: {
         name: { type: 'string' },
       },
-      required: ['name']
-    });
+      required: ['name'],
+    })
 
     return {
       exports: {
-
         init: () => {
-          privateClient.cache('');
+          privateClient.cache('')
         },
 
         on: privateClient.on,
 
         addDrink: (name: string) => {
-          const id = name.toLowerCase().replace(/\s|\//g, '-'); // TODO: hash it reliably
+          const id = name.toLowerCase().replace(/\s|\//g, '-') // TODO: hash it reliably
           return privateClient.storeObject('drink', id, {
             name,
-          });
+          })
         },
 
         removeDrink: privateClient.remove.bind(privateClient),
 
         listDrinks: () => {
-          return privateClient.getAll('');
-        }
-      }
+          return privateClient.getAll('')
+        },
+      },
     }
-  }
-};
+  },
+}

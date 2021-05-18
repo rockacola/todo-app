@@ -11,3 +11,15 @@ export interface TodoList {
   title: string
   items: TodoItem[]
 }
+
+/**
+ * For sake of simplicity dealing with DeclareType, avoid nullable type
+ */
+export interface TodoItemRS {
+  id: string
+  listId: string
+  title: string
+  completedAt: number // timestamp in sec, -1 for 'undefined'
+  createdAt: number // timestamp in sec
+  updatedAt: number // timestamp in sec, -1 for 'undefined'
+}

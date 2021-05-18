@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
-import { DrinksModule } from '../modules/drinks-module'
+import { TimingHelper } from '../helpers'
+import { TodoItemRS } from '../interfaces'
+import { TodosModule } from '../modules/todos-module'
 
-const CLAIM_DIR = 'myDrinks'
+const CLAIM_DIR = 'myTodos'
 let remoteStorage: RemoteStorage
 
-interface DrinkItem {
-  id: string
-  name: string
-}
-
-function Drinks() {
-  console.log('Drinks component rendered.')
+function TodosRS() {
+  // console.log('TodosRS component rendered.')
 
   const [newItemTitle, setNewItemTitle] = useState<string>('')
-  const [displayDrinks, setDisplayDrinks] = useState<DrinkItem[]>([])
-  const [isConnected, setIsConnected] = useState<boolean>(false)
+  const [displayTodoItems, setDisplayTodoItems] = useState<TodoItemRS[]>([])
+  const [isRemoteStorageConnected, setIsRemoteStorageConnected] =
+    useState<boolean>(false)
 
   const initRemoteStorage = () => {
     console.log('initRemoteStorage triggered.')
 
     remoteStorage = new RemoteStorage({
       logging: false,
-      modules: [DrinksModule],
+      modules: [TodosModule],
     })
     remoteStorage.access.claim(CLAIM_DIR, 'rw')
     // const remoteClient = remoteStorage.scope('/' + CLAIM_DIR + '/');
@@ -33,8 +31,8 @@ function Drinks() {
 
     remoteStorage.on('connected', () => {
       console.log('remoteStorage.connected event triggered.')
-      updateDisplayDrinks()
-      setIsConnected(true)
+      updateDisplayTodoItems()
+      setIsRemoteStorageConnected(true)
     })
 
     remoteStorage.on('network-offline', () => {
@@ -47,7 +45,7 @@ function Drinks() {
 
     remoteStorage.on('disconnected', () => {
       console.log('remoteStorage.disconnected event triggered.')
-      setIsConnected(false)
+      setIsRemoteStorageConnected(false)
     })
 
     remoteStorage.on('error', (err: any) => {
@@ -57,23 +55,23 @@ function Drinks() {
 
   useEffect(() => {
     console.log('Component onMount triggered.')
-
-    // setDisplayDrinks([
-    //   {id: '12', name: 'One'},
-    //   {id: '13', name: 'Two'}
-    // ])
-
     initRemoteStorage()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const updateDisplayDrinks = async () => {
-    const fetchedDrinks = await (remoteStorage as any).myDrinks.listDrinks()
-    console.log('fetchedDrinks:', fetchedDrinks)
-    const drinksArray = Object.values(fetchedDrinks).filter(
+  const updateDisplayTodoItems = async (delay = 0) => {
+    // Inject artificial delay as a way to workaround racing condition
+    if (delay > 0) {
+      await TimingHelper.sleep(delay)
+    }
+
+    console.log('updateDisplayTodoItems triggered.')
+    const todoItemsRes = await (remoteStorage as any).myTodos.listTodoItems()
+    console.log('todoItemsRes:', todoItemsRes)
+    const todoItemsArray = Object.values(todoItemsRes).filter(
       (item) => typeof item === 'object'
     )
-    console.log('drinksArray:', drinksArray)
-    setDisplayDrinks(drinksArray as DrinkItem[])
+    console.log('todoItemsArray:', todoItemsArray)
+    setDisplayTodoItems(todoItemsArray as TodoItemRS[])
   }
 
   const onNewItemTitleChangeHandler = (e: React.ChangeEvent) => {
@@ -84,17 +82,24 @@ function Drinks() {
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('onSubmitHandler triggered. e:', e)
-    ;(remoteStorage as any).myDrinks.addDrink(newItemTitle)
+    // TODO: mvoe builder into its own helper
+    const newItem: TodoItemRS = {
+      id: `i_${Math.floor(Math.random() * 1000000)}`,
+      listId: 'l_1', // TODO: manage magic string
+      title: newItemTitle,
+      completedAt: -1,
+      createdAt: Math.floor(Date.now() / 1000),
+      updatedAt: -1,
+    }
+    ;(remoteStorage as any).myTodos.addTodoItem(newItem)
     setNewItemTitle('')
-    updateDisplayDrinks()
+    updateDisplayTodoItems(500)
   }
 
-  const onItemDeleteHandler = (item: DrinkItem) => {
+  const onItemDeleteHandler = (item: TodoItemRS) => {
     console.log('onItemDeleteHandler triggered. item:', item)
-    console.log('remoteStorage:', remoteStorage)
-    const storageItemId = item.name.toLowerCase().replace(/\s|\//g, '-') // TODO: hash it reliably
-    ;(remoteStorage as any).myDrinks.removeDrink(storageItemId)
-    updateDisplayDrinks()
+    ;(remoteStorage as any).myTodos.removeTodoItem(item.id)
+    updateDisplayTodoItems()
   }
 
   const connectHandler = () => {
@@ -110,14 +115,14 @@ function Drinks() {
     remoteStorage.disconnect()
   }
 
-  const renderDrinkItem = (item: DrinkItem, index: number) => (
+  const renderTodoItem = (item: TodoItemRS, index: number) => (
     <div key={index} className="p-2 my-2 bg-red-50 rounded flex items-center">
-      <div className="flex-grow">{item.name}</div>
+      <div className="flex-grow">{item.title}</div>
       <div
-        className="p-2 bg-blue-100 hover:bg-blue-200 cursor-pointer"
+        className="px-4 py-2 bg-blue-100 rounded hover:bg-blue-200 cursor-pointer"
         onClick={() => onItemDeleteHandler(item)}
       >
-        [X]
+        X
       </div>
     </div>
   )
@@ -126,11 +131,11 @@ function Drinks() {
     <div className="h-screen bg-gray-100">
       <div className="w-100 max-w-xl h-full mx-auto bg-white py-4 md:px-4">
         <h1 className="text-lg font-bold text-gray-800 text-center leading-tight p-4">
-          Drink List
+          Todo List
         </h1>
         <div className="my-2 text-center">
           <div className="inline-block p-2 bg-indigo-200 hover:bg-indigo-300 rounded">
-            {!isConnected ? (
+            {!isRemoteStorageConnected ? (
               <button onClick={connectHandler}>Connect</button>
             ) : (
               <button onClick={disconnectHandler}>Disconnect</button>
@@ -138,7 +143,7 @@ function Drinks() {
           </div>
         </div>
         <div className="">
-          {displayDrinks.map((item, index) => renderDrinkItem(item, index))}
+          {displayTodoItems.map((item, index) => renderTodoItem(item, index))}
         </div>
         <div>
           <form onSubmit={onSubmitHandler}>
@@ -165,4 +170,4 @@ function Drinks() {
   )
 }
 
-export default Drinks
+export default TodosRS
