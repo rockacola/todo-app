@@ -1,17 +1,13 @@
 import { PlusIcon } from '@heroicons/react/outline'
 import React from 'react'
 
-interface AddTodoItemFormProps {
+interface Props {
   onSubmit: (e: React.FormEvent) => void
   title: string
   onTitleChange: (e: React.ChangeEvent) => void
 }
 
-export function AddTodoItemForm({
-  onSubmit,
-  title,
-  onTitleChange,
-}: AddTodoItemFormProps) {
+export function AddTodoItemForm({ onSubmit, title, onTitleChange }: Props) {
   return (
     <form onSubmit={onSubmit}>
       <div className="flex items-center">
