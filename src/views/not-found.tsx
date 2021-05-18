@@ -2,12 +2,13 @@ import { useState } from 'react'
 import RemoteStorage from 'remotestoragejs'
 // import Widget from 'remotestorage-widget'
 
-const remoteStorage = new RemoteStorage({ logging: true })
 
 // const userAddress = `yenct@5apps.com`
 
 function NotFound() {
   const [isConnected, setIsConnected] = useState<boolean>(false)
+
+  const remoteStorage = new RemoteStorage({ logging: true })
 
   remoteStorage.access.claim('myFooBar', 'rw')
   // remoteStorage.caching.enable('/myfavoritedrinks/')
