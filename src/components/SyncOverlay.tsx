@@ -9,7 +9,7 @@ export function SyncOverlay({ children, isSyncing }: Props) {
   return (
     <Box position="relative">
       {children}
-      {isSyncing && (
+      {!!isSyncing && (
         <Box
           alignItems="center"
           bg="gray.25"

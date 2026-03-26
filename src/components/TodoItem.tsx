@@ -1,4 +1,5 @@
 import { Button, Checkbox, Flex } from '@chakra-ui/react';
+
 import type { TodoItem as TodoItemType } from '../lib/remoteStorage';
 
 interface Props {
@@ -51,10 +52,10 @@ export function TodoItem({ onRemove, onToggle, todo }: Props) {
         aria-label="Remove task"
         color="gray.400"
         minW="auto"
+        onClick={() => onRemove(todo.id)}
         px={2}
         size="sm"
         variant="ghost"
-        onClick={() => onRemove(todo.id)}
       >
         ✕
       </Button>

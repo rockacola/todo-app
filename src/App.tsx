@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { Box, Container, Stack } from '@chakra-ui/react';
-import { useTodos } from './hooks/useTodos';
-import { useStorageStatus } from './hooks/useStorageStatus';
+import { useState } from 'react';
+
 import { AddTodoForm } from './components/AddTodoForm';
 import { EmptyState } from './components/EmptyState';
 import { PageHeader } from './components/PageHeader';
@@ -9,6 +8,8 @@ import { RemainingCount } from './components/RemainingCount';
 import { StorageModal } from './components/StorageModal';
 import { SyncOverlay } from './components/SyncOverlay';
 import { TodoList } from './components/TodoList';
+import { useStorageStatus } from './hooks/useStorageStatus';
+import { useTodos } from './hooks/useTodos';
 
 function App() {
   const { todos, addTodo, toggleTodo, removeTodo, clearCompleted } = useTodos();
@@ -31,8 +32,8 @@ function App() {
         <Stack gap={6}>
           <Box>
             <PageHeader
-              storageStatus={storageStatus}
               onConnect={() => setIsStorageModalOpen(true)}
+              storageStatus={storageStatus}
             />
             <RemainingCount count={remaining} />
           </Box>
@@ -42,10 +43,10 @@ function App() {
               <EmptyState />
             ) : (
               <TodoList
-                todos={todos}
                 onClearCompleted={clearCompleted}
                 onRemove={removeTodo}
                 onToggle={toggleTodo}
+                todos={todos}
               />
             )}
           </SyncOverlay>
@@ -53,8 +54,8 @@ function App() {
       </Container>
       <StorageModal
         isOpen={isStorageModalOpen}
-        status={storageStatus}
         onClose={() => setIsStorageModalOpen(false)}
+        status={storageStatus}
       />
     </Box>
   );

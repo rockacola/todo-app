@@ -1,7 +1,8 @@
-import { useState } from 'react';
 import { Button, Dialog, Field, Input, Link, Stack, Text } from '@chakra-ui/react';
-import { rs } from '../lib/remoteStorage';
+import { useState } from 'react';
+
 import type { StorageStatus } from '../hooks/useStorageStatus';
+import { rs } from '../lib/remoteStorage';
 
 interface Props {
   isOpen: boolean;
@@ -29,7 +30,7 @@ export function StorageModal({ isOpen, onClose, status }: Props) {
   };
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={({ open }) => !open && onClose()}>
+    <Dialog.Root onOpenChange={({ open }) => !open && onClose()} open={isOpen}>
       <Dialog.Backdrop />
       <Dialog.Positioner>
         <Dialog.Content>
@@ -51,11 +52,11 @@ export function StorageModal({ isOpen, onClose, status }: Props) {
               </Dialog.Body>
               <Dialog.Footer gap={2}>
                 <Dialog.ActionTrigger asChild>
-                  <Button variant="ghost" onClick={onClose}>
+                  <Button onClick={onClose} variant="ghost">
                     Close
                   </Button>
                 </Dialog.ActionTrigger>
-                <Button colorScheme="red" variant="outline" onClick={handleDisconnect}>
+                <Button colorScheme="red" onClick={handleDisconnect} variant="outline">
                   Disconnect
                 </Button>
               </Dialog.Footer>
@@ -75,10 +76,10 @@ export function StorageModal({ isOpen, onClose, status }: Props) {
                     <Field.Label>remoteStorage address</Field.Label>
                     <Input
                       autoFocus
-                      placeholder="you@remotestorage.example.com"
-                      value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       onKeyDown={handleKeyDown}
+                      placeholder="you@remotestorage.example.com"
+                      value={address}
                     />
                     <Field.HelperText>
                       No account?{' '}
@@ -96,7 +97,7 @@ export function StorageModal({ isOpen, onClose, status }: Props) {
               </Dialog.Body>
               <Dialog.Footer gap={2}>
                 <Dialog.ActionTrigger asChild>
-                  <Button variant="ghost" onClick={onClose}>
+                  <Button onClick={onClose} variant="ghost">
                     Cancel
                   </Button>
                 </Dialog.ActionTrigger>

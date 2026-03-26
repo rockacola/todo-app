@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+
 import { rs } from '../lib/remoteStorage';
 import type { TodoItem } from '../lib/remoteStorage';
 

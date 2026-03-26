@@ -1,6 +1,8 @@
 import { Box, Flex, Heading } from '@chakra-ui/react';
-import { StorageStatusIcon } from './StorageStatusIcon';
+
 import type { StorageStatus } from '../hooks/useStorageStatus';
+
+import { StorageStatusIcon } from './StorageStatusIcon';
 
 interface Props {
   onConnect: () => void;
@@ -19,7 +21,7 @@ export function PageHeader({ onConnect, storageStatus }: Props) {
         >
           Tasks
         </Heading>
-        <StorageStatusIcon status={storageStatus} onClick={onConnect} />
+        <StorageStatusIcon onClick={onConnect} status={storageStatus} />
       </Flex>
     </Box>
   );

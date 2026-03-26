@@ -1,5 +1,6 @@
 import { Button } from '@chakra-ui/react';
 import { Cloud, CloudOff } from 'lucide-react';
+
 import type { StorageStatus } from '../hooks/useStorageStatus';
 
 interface Props {
@@ -17,10 +18,10 @@ export function StorageStatusIcon({ onClick, status }: Props) {
       color={isConnected ? 'green.500' : 'gray.300'}
       minW="auto"
       mt={1}
+      onClick={onClick}
       px={1.5}
       py={1}
       variant="ghost"
-      onClick={onClick}
     >
       {isConnected ? (
         <Cloud size={22} strokeWidth={1.75} />
