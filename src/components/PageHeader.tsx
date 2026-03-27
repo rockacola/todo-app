@@ -1,18 +1,19 @@
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading, Spacer } from '@chakra-ui/react';
 
-import type { StorageStatus } from '../hooks/useStorageStatus';
+import type { StorageStatus } from '../hooks/useRemoteStorage';
 
 import { StorageStatusIcon } from './StorageStatusIcon';
 
 interface Props {
   onConnect: () => void;
   storageStatus: StorageStatus;
+  userAddress: string | null;
 }
 
-export function PageHeader({ onConnect, storageStatus }: Props) {
+export function PageHeader({ onConnect, storageStatus, userAddress }: Props) {
   return (
     <Box>
-      <Flex align="center" gap={3} justify="center">
+      <Flex align="center" gap={3}>
         <Heading
           color="gray.800"
           fontFamily='"Abel", "Roboto", "Helvetica Neue", Arial, sans-serif'
@@ -21,7 +22,8 @@ export function PageHeader({ onConnect, storageStatus }: Props) {
         >
           Tasks
         </Heading>
-        <StorageStatusIcon onClick={onConnect} status={storageStatus} />
+        <Spacer />
+        <StorageStatusIcon onClick={onConnect} status={storageStatus} userAddress={userAddress} />
       </Flex>
     </Box>
   );

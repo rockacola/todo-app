@@ -1,21 +1,22 @@
-import { Button } from '@chakra-ui/react';
-import { Cloud, CloudOff } from 'lucide-react';
+import { Button, Text } from '@chakra-ui/react';
+import { Cloud } from 'lucide-react';
 
-import type { StorageStatus } from '../hooks/useStorageStatus';
+import type { StorageStatus } from '../hooks/useRemoteStorage';
 
 interface Props {
   onClick: () => void;
   status: StorageStatus;
+  userAddress: string | null;
 }
 
-export function StorageStatusIcon({ onClick, status }: Props) {
+export function StorageStatusIcon({ onClick, status, userAddress }: Props) {
   const isConnected = status === 'connected';
 
   return (
     <Button
-      _hover={{ color: isConnected ? 'green.600' : 'gray.500' }}
       aria-label={isConnected ? 'Manage storage connection' : 'Connect to remote storage'}
-      color={isConnected ? 'green.500' : 'gray.300'}
+      color={isConnected ? undefined : 'gray.400'}
+      colorPalette={isConnected ? 'cyan' : 'gray'}
       minW="auto"
       mt={1}
       onClick={onClick}
@@ -24,9 +25,25 @@ export function StorageStatusIcon({ onClick, status }: Props) {
       variant="ghost"
     >
       {isConnected ? (
-        <Cloud size={22} strokeWidth={1.75} />
+        <>
+          <Cloud fill="currentColor" size={22} strokeWidth={0} />
+          {!!userAddress && (
+            <Text
+              fontSize="sm"
+              maxW={48}
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+            >
+              {userAddress}
+            </Text>
+          )}
+        </>
       ) : (
-        <CloudOff size={22} strokeWidth={1.75} />
+        <>
+          <Cloud fill="currentColor" size={22} strokeWidth={0} />
+          <Text fontSize="sm">Sync</Text>
+        </>
       )}
     </Button>
   );

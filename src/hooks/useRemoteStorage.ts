@@ -4,18 +4,26 @@ import { rs } from '../lib/remoteStorage';
 
 export type StorageStatus = 'connected' | 'disconnected';
 
-export interface StorageStatusResult {
+export interface RemoteStorageResult {
   isSyncing: boolean;
   status: StorageStatus;
+  userAddress: string | null;
 }
 
-export function useStorageStatus(): StorageStatusResult {
+export function useRemoteStorage(): RemoteStorageResult {
   const [status, setStatus] = useState<StorageStatus>(rs.connected ? 'connected' : 'disconnected');
   const [isSyncing, setIsSyncing] = useState(false);
+  const [userAddress, setUserAddress] = useState<string | null>(rs.remote.userAddress ?? null);
 
   useEffect(() => {
-    const onConnected = () => setStatus('connected');
-    const onDisconnected = () => setStatus('disconnected');
+    const onConnected = () => {
+      setStatus('connected');
+      setUserAddress(rs.remote.userAddress ?? null);
+    };
+    const onDisconnected = () => {
+      setStatus('disconnected');
+      setUserAddress(null);
+    };
     const onNotConnected = () => setStatus('disconnected');
     const onSyncStarted = () => setIsSyncing(true);
     const onSyncDone = () => setIsSyncing(false);
@@ -35,5 +43,5 @@ export function useStorageStatus(): StorageStatusResult {
     };
   }, []);
 
-  return { isSyncing, status };
+  return { isSyncing, status, userAddress };
 }

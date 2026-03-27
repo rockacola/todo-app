@@ -51,10 +51,11 @@ export function TodoItem({ onRemove, onToggle, todo }: Props) {
         _hover={{ color: 'red.400', bg: 'red.50' }}
         aria-label="Remove task"
         color="gray.400"
+        fontWeight="bold"
         minW="auto"
         onClick={() => onRemove(todo.id)}
-        px={2}
-        size="sm"
+        px={3}
+        size="md"
         variant="ghost"
       >
         ✕

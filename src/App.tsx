@@ -8,20 +8,24 @@ import { RemainingCount } from './components/RemainingCount';
 import { StorageModal } from './components/StorageModal';
 import { SyncOverlay } from './components/SyncOverlay';
 import { TodoList } from './components/TodoList';
-import { useStorageStatus } from './hooks/useStorageStatus';
+import { useRemoteStorage } from './hooks/useRemoteStorage';
 import { useTodos } from './hooks/useTodos';
 
 function App() {
   const { todos, addTodo, toggleTodo, removeTodo, clearCompleted } = useTodos();
-  const { isSyncing, status: storageStatus } = useStorageStatus();
+  const { isSyncing, status: storageStatus, userAddress } = useRemoteStorage();
   const [isStorageModalOpen, setIsStorageModalOpen] = useState(false);
 
   const remaining = todos.filter((t) => !t.done).length;
 
   return (
-    <Box bg="gray.100" minH="100vh" pb={{ base: 8, md: 16 }}>
+    <Box
+      background="linear-gradient(to bottom, {colors.gray.100} 80%, {colors.gray.200})"
+      minH="100vh"
+      pb={{ base: 8, md: 16 }}
+    >
       <Container
-        bgColor="white"
+        bgColor={{ base: 'transparent', md: 'white' }}
         borderBottomLeftRadius="lg"
         borderBottomRightRadius="lg"
         maxW="sm"
@@ -34,6 +38,7 @@ function App() {
             <PageHeader
               onConnect={() => setIsStorageModalOpen(true)}
               storageStatus={storageStatus}
+              userAddress={userAddress}
             />
             <RemainingCount count={remaining} />
           </Box>

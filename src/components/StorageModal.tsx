@@ -1,7 +1,7 @@
 import { Button, Dialog, Field, Input, Link, Stack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import type { StorageStatus } from '../hooks/useStorageStatus';
+import type { StorageStatus } from '../hooks/useRemoteStorage';
 import { rs } from '../lib/remoteStorage';
 
 interface Props {
@@ -30,10 +30,17 @@ export function StorageModal({ isOpen, onClose, status }: Props) {
   };
 
   return (
-    <Dialog.Root onOpenChange={({ open }) => !open && onClose()} open={isOpen}>
+    <Dialog.Root
+      onOpenChange={({ open }) => !open && onClose()}
+      open={isOpen}
+      size={{ base: 'full', md: 'sm' }}
+    >
       <Dialog.Backdrop />
       <Dialog.Positioner>
-        <Dialog.Content>
+        <Dialog.Content
+          // Chakra quirk: size="full" sets minH to 100dvh and doesn't reset it at larger breakpoints
+          minH={{ md: 'unset' }}
+        >
           {status === 'connected' ? (
             <>
               <Dialog.Header>
@@ -70,7 +77,7 @@ export function StorageModal({ isOpen, onClose, status }: Props) {
                 <Stack gap={4}>
                   <Text color="gray.600" fontSize="sm">
                     Enter your remoteStorage address to sync tasks across all your devices. Your
-                    data is stored in your own account — not on our servers.
+                    data is stored in your own account - not on our servers.
                   </Text>
                   <Field.Root>
                     <Field.Label>remoteStorage address</Field.Label>
