@@ -94,4 +94,10 @@ export default defineConfig([
       'react/jsx-no-leaked-render': 'error',
     },
   },
+  {
+    files: ['src/test/**/*.{ts,tsx}', '**/*.test.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ]);

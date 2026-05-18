@@ -83,15 +83,19 @@ Open [http://localhost:5173](http://localhost:5173). You should see the task man
 
 ### Available scripts
 
-| Script                  | Description                    |
-| ----------------------- | ------------------------------ |
-| `npm run dev`           | Start dev server               |
-| `npm run build`         | Type-check + production build  |
-| `npm run preview`       | Serve production build locally |
-| `npm test`              | Run tests                      |
-| `npm run test:coverage` | Run tests with coverage report |
-| `npm run lint`          | Lint with ESLint               |
-| `npm run format`        | Format with Prettier           |
+| Script                  | Description                                |
+| ----------------------- | ------------------------------------------ |
+| `npm run dev`           | Start dev server                           |
+| `npm run build`         | Type-check + production build              |
+| `npm run preview`       | Serve production build locally             |
+| `npm run typecheck`     | Type-check without building                |
+| `npm run lint`          | Lint with ESLint                           |
+| `npm run lint:fix`      | Lint and auto-fix                          |
+| `npm run format`        | Format with Prettier                       |
+| `npm run format:check`  | Check formatting (CI-friendly)             |
+| `npm run check`         | Format + lint:fix + typecheck (pre-commit) |
+| `npm test`              | Run tests                                  |
+| `npm run test:coverage` | Run tests with coverage report             |
 
 ## Project Structure
 
