@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { AddTodoForm } from './components/AddTodoForm';
 import { EmptyState } from './components/EmptyState';
+import { PageFooter } from './components/PageFooter';
 import { PageHeader } from './components/PageHeader';
 import { RemainingCount } from './components/RemainingCount';
 import { StorageModal } from './components/StorageModal';
@@ -57,6 +58,7 @@ function App() {
           </SyncOverlay>
         </Stack>
       </Container>
+      <PageFooter />
       <StorageModal
         isOpen={isStorageModalOpen}
         onClose={() => setIsStorageModalOpen(false)}
