@@ -18,19 +18,20 @@ Open [http://localhost:5173](http://localhost:5173).
 
 ## Available Commands
 
-| Script                  | Description                                |
-| ----------------------- | ------------------------------------------ |
-| `npm run dev`           | Start Vite dev server                      |
-| `npm run build`         | Type-check + production build              |
-| `npm run preview`       | Serve production build locally             |
-| `npm run typecheck`     | Type-check without building                |
-| `npm run lint`          | Lint with ESLint                           |
-| `npm run lint:fix`      | Lint and auto-fix                          |
-| `npm run format`        | Format with Prettier                       |
-| `npm run format:check`  | Check formatting (CI-friendly)             |
-| `npm run check`         | Format + lint:fix + typecheck (pre-commit) |
-| `npm test`              | Run tests                                  |
-| `npm run test:coverage` | Run tests with coverage report             |
+| Script                  | Description                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+| `npm run dev`           | Start Vite dev server                                                                 |
+| `npm run build`         | Type-check + production build                                                         |
+| `npm run preview`       | Serve production build locally                                                        |
+| `npm run typecheck`     | Type-check without building                                                           |
+| `npm run lint`          | Lint with ESLint                                                                      |
+| `npm run lint:fix`      | Lint and auto-fix                                                                     |
+| `npm run format`        | Format with Prettier                                                                  |
+| `npm run format:check`  | Check formatting (CI-friendly)                                                        |
+| `npm run check`         | Format + lint:fix + typecheck (pre-commit)                                            |
+| `npm test`              | Run tests                                                                             |
+| `npm run test:coverage` | Run tests with coverage report                                                        |
+| `npm run snapshot`      | Capture full-page screenshots of all routes (dev server must be running on port 5173) |
 
 ## Project Structure
 
@@ -41,6 +42,8 @@ src/
 ├── lib/               # remoteStorage module definition and initialisation
 ├── types/             # TypeScript type definitions
 └── test/              # Test setup and shared render utility
+scripts/
+└── snapshot.js        # Playwright full-page screenshot script
 docs/
 ├── overview.md        # Architecture and data flow
 └── getting-started.md # This file

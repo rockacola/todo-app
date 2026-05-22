@@ -13,6 +13,7 @@
     "preview": "vite preview",
     "typecheck": "tsc -b",
     "check": "npm run format && npm run lint:fix && npm run typecheck",
+    "snapshot": "node scripts/snapshot.js",
     "test": "vitest",
     "test:coverage": "vitest --coverage"
   },
@@ -43,6 +44,7 @@
     "eslint-plugin-react-refresh": "0.5.2",
     "globals": "17.4.0",
     "jsdom": "^29.0.1",
+    "playwright": "^1.60.0",
     "prettier": "3.8.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "8.57.0",
