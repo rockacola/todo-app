@@ -24,12 +24,14 @@ async function clearStorage(page) {
 }
 
 async function addSampleTodos(page) {
+  const TASKS = ['Buy groceries', 'Write unit tests', 'Ship the release'];
   const input = page.locator('input[placeholder="Add a task..."]');
-  for (const text of ['Buy groceries', 'Write unit tests', 'Ship the release']) {
+  for (const text of TASKS) {
     await input.fill(text);
     await input.press('Enter');
   }
   await page.waitForSelector('text=Buy groceries');
+  await page.locator('[data-part="control"]').first().click();
 }
 
 const ROUTES = [
