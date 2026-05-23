@@ -4,10 +4,8 @@ import { defineConfig } from 'vite';
 import { version } from './package.json';
 
 // https://vite.dev/config/
-const repo = process.env.GITHUB_REPOSITORY?.split('/')[1];
-
 export default defineConfig({
-  base: repo ? `/${repo}/` : '/',
+  base: '/todo-app/',
   define: {
     __APP_VERSION__: JSON.stringify(version),
   },
