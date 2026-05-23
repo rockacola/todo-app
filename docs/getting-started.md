@@ -14,7 +14,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173).
+Open [http://localhost:3000](http://localhost:3000).
 
 ## Available Commands
 
@@ -31,7 +31,7 @@ Open [http://localhost:5173](http://localhost:5173).
 | `npm run check`         | Format + lint:fix + typecheck (pre-commit)                                            |
 | `npm test`              | Run tests                                                                             |
 | `npm run test:coverage` | Run tests with coverage report                                                        |
-| `npm run snapshot`      | Capture full-page screenshots of all routes (dev server must be running on port 5173) |
+| `npm run snapshot`      | Capture full-page screenshots of all routes (dev server must be running on port 3000) |
 
 ## Project Structure
 

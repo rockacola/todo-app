@@ -73,7 +73,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). You should see the task manager UI.
+Open [http://localhost:3000](http://localhost:3000). You should see the task manager UI.
 
 ### Optional: enable cloud sync
 

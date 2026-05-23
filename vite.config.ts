@@ -12,4 +12,7 @@ export default defineConfig({
     __APP_VERSION__: JSON.stringify(version),
   },
   plugins: [react()],
+  server: {
+    port: 3000,
+  },
 });

@@ -3,7 +3,7 @@ import { join } from 'path';
 
 import { chromium } from 'playwright';
 
-const BASE_URL = 'http://localhost:5173';
+const BASE_URL = 'http://localhost:3000';
 
 async function clearStorage(page) {
   await page.evaluate(async () => {
