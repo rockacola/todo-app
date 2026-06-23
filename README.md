@@ -4,7 +4,7 @@ A privacy-focused, offline-first task manager built with React and TypeScript. I
 
 **Live demo:** [rockacola.github.io/todo-app](https://rockacola.github.io/todo-app)
 
-![Screenshot](docs/screenshot.png)
+![Screenshot](screenshot.png)
 
 ## Tech Stack
 
@@ -83,19 +83,20 @@ Open [http://localhost:3000/todo-app/](http://localhost:3000/todo-app/). You sho
 
 ### Available scripts
 
-| Script                  | Description                                |
-| ----------------------- | ------------------------------------------ |
-| `npm run dev`           | Start dev server                           |
-| `npm run build`         | Type-check + production build              |
-| `npm run preview`       | Serve production build locally             |
-| `npm run typecheck`     | Type-check without building                |
-| `npm run lint`          | Lint with ESLint                           |
-| `npm run lint:fix`      | Lint and auto-fix                          |
-| `npm run format`        | Format with Prettier                       |
-| `npm run format:check`  | Check formatting (CI-friendly)             |
-| `npm run check`         | Format + lint:fix + typecheck (pre-commit) |
-| `npm test`              | Run tests                                  |
-| `npm run test:coverage` | Run tests with coverage report             |
+| Script                  | Description                                                             |
+| ----------------------- | ----------------------------------------------------------------------- |
+| `npm run dev`           | Start dev server                                                        |
+| `npm run build`         | Type-check + production build                                           |
+| `npm run preview`       | Serve production build locally                                          |
+| `npm run typecheck`     | Type-check without building                                             |
+| `npm run lint`          | Lint with ESLint                                                        |
+| `npm run lint:fix`      | Lint and auto-fix                                                       |
+| `npm run format`        | Format with Prettier                                                    |
+| `npm run format:check`  | Check formatting (CI-friendly)                                          |
+| `npm run check`         | Format + lint:fix + typecheck (pre-commit)                              |
+| `npm test`              | Run tests                                                               |
+| `npm run test:coverage` | Run tests with coverage report                                          |
+| `npm run snapshot`      | Capture full-page screenshots (dev server must be running on port 3000) |
 
 ## Project Structure
 

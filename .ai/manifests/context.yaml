@@ -1,0 +1,6 @@
+contexts:
+  - path: .ai/context/architecture.md
+    description: System architecture, components, data flow, and deployment model
+    tags:
+      - architecture
+      - deployment
